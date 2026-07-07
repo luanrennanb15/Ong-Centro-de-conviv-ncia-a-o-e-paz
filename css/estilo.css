@@ -34,6 +34,8 @@ body {
   background: var(--white);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;            /* impede rolagem/corte horizontal sem quebrar o cabeçalho fixo */
+  overflow-wrap: break-word;   /* quebra palavras muito longas (e-mails, links) no lugar de estourar */
 }
 
 img { max-width: 100%; display: block; }
@@ -536,15 +538,17 @@ section { padding: 72px 0; }
 .mt-40 { margin-top: 40px; }
 
 /* =========================================================
-   RESPONSIVO
+   RESPONSIVO  —  celular · tablet · desktop
    ========================================================= */
-@media (max-width: 940px) {
+
+/* ---- Tablets e telas médias: empilha o conteúdo ---- */
+@media (max-width: 1000px) {
   .hero-grid { grid-template-columns: 1fr; text-align: center; }
   .hero p { margin-left: auto; margin-right: auto; }
   .hero-cta { justify-content: center; }
   .hero-stats { justify-content: center; }
   .hero-art { order: -1; }
-  .hero-art .logo-badge { width: 220px; height: 220px; }
+  .hero-art .logo-badge { width: 230px; height: 230px; }
   .split { grid-template-columns: 1fr; }
   .split .media { min-height: 240px; }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -552,36 +556,77 @@ section { padding: 72px 0; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
-@media (max-width: 720px) {
-  /* menu mobile */
+/* ---- MENU MOBILE (celular + tablet) ----
+   Abaixo de 900px o menu horizontal não cabe, então ele vira um
+   painel que abre pelo botão hambúrguer e ocupa a largura toda. */
+@media (max-width: 900px) {
   .nav-toggle { display: flex; }
   .nav-links {
     position: absolute;
-    top: 100%; left: 0; right: 0;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
     background: var(--navy);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 8px 16px 18px;
-    box-shadow: 0 12px 20px rgba(0,0,0,.25);
+    padding: 6px 18px 18px;
+    box-shadow: 0 16px 26px rgba(0,0,0,.32);
     max-height: 0;
-    overflow: hidden;
-    transition: max-height .3s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transition: max-height .35s ease;
   }
-  .nav-links.open { max-height: 460px; }
-  .nav-links a { padding: 13px 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
-  .nav-links .btn { margin: 12px 0 0; }
+  .nav-links.open { max-height: calc(100vh - 70px); }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block;
+    padding: 15px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    font-size: 1.05rem;
+  }
+  .nav-links a.active { background: rgba(255,255,255,.10); }
+  .nav-links .btn {
+    margin: 14px 0 4px;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 1.05rem;
+  }
   .nav-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
   .nav-toggle.active span:nth-child(2) { opacity: 0; }
   .nav-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 }
 
-@media (max-width: 620px) {
-  section { padding: 52px 0; }
+/* ---- Celulares grandes ---- */
+@media (max-width: 640px) {
+  section { padding: 50px 0; }
+  .container { padding: 0 16px; }
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
   .gallery { grid-template-columns: repeat(2, 1fr); }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .form-row { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; }
+  .hero { padding: 56px 0; }
+  .page-hero { padding: 46px 0; }
+  .cta-band { padding: 40px 22px; }
+  .form-card { padding: 22px; }
+  .section-head { margin-bottom: 34px; }
+  .hero-stats { gap: 20px 26px; }
+  .whatsapp-float { width: 52px; height: 52px; right: 16px; bottom: 16px; }
+  .whatsapp-float svg { width: 28px; height: 28px; }
+}
+
+/* ---- Celulares pequenos ---- */
+@media (max-width: 480px) {
   .brand .brand-text span { display: none; }
+  .brand img { width: 40px; height: 40px; }
+  .hero-art .logo-badge { width: 190px; height: 190px; padding: 20px; }
+  .hero-cta { flex-direction: column; }
+  .hero-cta .btn { width: 100%; }
+  .stats { grid-template-columns: 1fr; }
+  .gallery { grid-template-columns: 1fr; }
+  .aviso-proto { font-size: .76rem; padding: 8px 12px; }
+  .stat .num { font-size: 2.2rem; }
+  .pix-key { font-size: .85rem; word-break: break-all; }
 }
