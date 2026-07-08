@@ -1,6 +1,6 @@
 /* =========================================================
    CIS - Centro de Convivência Ação e Paz
-   JavaScript compartilhado (protótipo fictício)
+   JavaScript compartilhado
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
       links.classList.toggle("open");
       toggle.classList.toggle("active");
     });
-    // fecha o menu ao clicar num link
     links.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", function () {
         links.classList.remove("open");
@@ -22,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ---------- 2. Contadores animados (números de impacto) ---------- */
+  /* ---------- 2. Contadores animados ---------- */
   const counters = document.querySelectorAll("[data-count]");
   if (counters.length) {
     const animate = function (el) {
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const start = performance.now();
       const step = function (now) {
         const p = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+        const eased = 1 - Math.pow(1 - p, 3);
         el.textContent = Math.floor(eased * target).toLocaleString("pt-BR") + suffix;
         if (p < 1) requestAnimationFrame(step);
         else el.textContent = target.toLocaleString("pt-BR") + suffix;
@@ -41,10 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     const obs = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animate(entry.target);
-          obs.unobserve(entry.target);
-        }
+        if (entry.isIntersecting) { animate(entry.target); obs.unobserve(entry.target); }
       });
     }, { threshold: 0.4 });
     counters.forEach(function (c) { obs.observe(c); });
@@ -71,12 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
       const item = q.parentElement;
       const answer = item.querySelector(".faq-a");
       const isOpen = item.classList.contains("open");
-      // fecha todos
       document.querySelectorAll(".faq-item.open").forEach(function (i) {
         i.classList.remove("open");
         i.querySelector(".faq-a").style.maxHeight = null;
       });
-      // abre o clicado (se estava fechado)
       if (!isOpen) {
         item.classList.add("open");
         answer.style.maxHeight = answer.scrollHeight + "px";
@@ -84,18 +78,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  /* ---------- 5. Validação simples de formulários ---------- */
+  /* ---------- 5. Validação simples (formulários demo) ---------- */
   document.querySelectorAll("form[data-demo]").forEach(function (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       let ok = true;
       form.querySelectorAll("[required]").forEach(function (campo) {
-        if (!campo.value.trim()) {
-          ok = false;
-          campo.style.borderColor = "#e05a5a";
-        } else {
-          campo.style.borderColor = "";
-        }
+        if (!campo.value.trim()) { ok = false; campo.style.borderColor = "#e05a5a"; }
+        else { campo.style.borderColor = ""; }
       });
       const msg = form.querySelector(".form-msg");
       if (ok) {
@@ -106,20 +96,45 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  /* ---------- 5b. Formulários que abrem o WhatsApp ---------- */
+  var WA_NUM = "5515997531485";
+  document.querySelectorAll("form[data-wa]").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var ok = true;
+      form.querySelectorAll("[required]").forEach(function (campo) {
+        if (!campo.value.trim()) { ok = false; campo.style.borderColor = "#e05a5a"; }
+        else { campo.style.borderColor = ""; }
+      });
+      if (!ok) return;
+      var linhas = [form.getAttribute("data-wa") || "Ola! Vim pelo site do CIS.", ""];
+      form.querySelectorAll(".field").forEach(function (fld) {
+        var lab = fld.querySelector("label");
+        var inp = fld.querySelector("input, select, textarea");
+        if (lab && inp && inp.value.trim()) {
+          linhas.push(lab.textContent.replace("*", "").trim() + ": " + inp.value.trim());
+        }
+      });
+      var url = "https://wa.me/" + WA_NUM + "?text=" + encodeURIComponent(linhas.join("\n"));
+      window.open(url, "_blank");
+      var msg = form.querySelector(".form-msg");
+      if (msg) { msg.classList.add("show"); setTimeout(function () { msg.classList.remove("show"); }, 6000); }
+      form.reset();
+    });
+  });
+
   /* ---------- 6. Copiar chave Pix ---------- */
   document.querySelectorAll("[data-copy]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       const texto = btn.getAttribute("data-copy");
       const original = btn.textContent;
       const done = function () {
-        btn.textContent = "Copiado! ✓";
+        btn.textContent = "Copiado!";
         setTimeout(function () { btn.textContent = original; }, 2000);
       };
       if (navigator.clipboard) {
         navigator.clipboard.writeText(texto).then(done).catch(done);
-      } else {
-        done();
-      }
+      } else { done(); }
     });
   });
 
@@ -187,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
       '<button class="lightbox-close" aria-label="Fechar">&times;</button>' +
       '<button class="lightbox-nav prev" aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
       '<img alt="Foto ampliada" />' +
-      '<button class="lightbox-nav next" aria-label="Próxima"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
+      '<button class="lightbox-nav next" aria-label="Proxima"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>';
     document.body.appendChild(box);
     var bigImg = box.querySelector("img");
     var current = 0;
@@ -196,17 +211,17 @@ document.addEventListener("DOMContentLoaded", function () {
       current = (i + srcs.length) % srcs.length;
       bigImg.setAttribute("src", srcs[current]);
     };
-    var open = function (i) { show(i); box.classList.add("open"); };
-    var close = function () { box.classList.remove("open"); };
+    var openLb = function (i) { show(i); box.classList.add("open"); };
+    var closeLb = function () { box.classList.remove("open"); };
 
-    imgs.forEach(function (im, i) { im.addEventListener("click", function () { open(i); }); });
-    box.querySelector(".lightbox-close").addEventListener("click", close);
+    imgs.forEach(function (im, i) { im.addEventListener("click", function () { openLb(i); }); });
+    box.querySelector(".lightbox-close").addEventListener("click", closeLb);
     box.querySelector(".lightbox-nav.prev").addEventListener("click", function (e) { e.stopPropagation(); show(current - 1); });
     box.querySelector(".lightbox-nav.next").addEventListener("click", function (e) { e.stopPropagation(); show(current + 1); });
-    box.addEventListener("click", function (e) { if (e.target === box) close(); });
+    box.addEventListener("click", function (e) { if (e.target === box) closeLb(); });
     document.addEventListener("keydown", function (e) {
       if (!box.classList.contains("open")) return;
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") closeLb();
       else if (e.key === "ArrowLeft") show(current - 1);
       else if (e.key === "ArrowRight") show(current + 1);
     });
