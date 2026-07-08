@@ -212,7 +212,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   })();
 
-  /* ---------- 10. Ano atual no rodapé ---------- */
+  /* ---------- 10. Botão voltar ao topo ---------- */
+  (function () {
+    var btn = document.createElement("button");
+    btn.className = "to-top";
+    btn.setAttribute("aria-label", "Voltar ao topo");
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    document.body.appendChild(btn);
+    var onScroll = function () { btn.classList.toggle("show", window.scrollY > 400); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    btn.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
+  })();
+
+  /* ---------- 11. Ano atual no rodapé ---------- */
   const anoEl = document.getElementById("ano");
   if (anoEl) anoEl.textContent = new Date().getFullYear();
 

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
 /* =========================================================
    CIS - Centro de Convivência Ação e Paz
    Folha de estilo compartilhada (protótipo fictício)
@@ -21,6 +23,7 @@
   --radius:      14px;
   --maxw:        1140px;
   --whatsapp:    #25d366;
+  --font-head:   "Poppins", "Segoe UI", system-ui, sans-serif;
 }
 
 /* ---------- Reset básico ---------- */
@@ -43,7 +46,7 @@ img { max-width: 100%; display: block; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-h1, h2, h3, h4 { line-height: 1.25; color: var(--navy); font-weight: 700; }
+h1, h2, h3, h4 { line-height: 1.25; color: var(--navy); font-weight: 700; font-family: var(--font-head); letter-spacing: -.01em; }
 
 .container {
   width: 100%;
@@ -125,7 +128,7 @@ section { padding: 72px 0; }
   background: var(--navy);
 }
 .brand .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
-.brand .brand-text strong { color: #fff; font-size: 1.05rem; letter-spacing: .5px; }
+.brand .brand-text strong { color: #fff; font-size: 1.05rem; letter-spacing: .5px; font-family: var(--font-head); }
 .brand .brand-text span { color: #b9c6ef; font-size: .74rem; }
 
 .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
@@ -767,6 +770,32 @@ section { padding: 72px 0; }
 @media (max-width: 640px) {
   .lightbox-nav { width: 42px; height: 42px; }
   .lightbox-close { top: 12px; right: 14px; }
+}
+
+/* ---------- Botão voltar ao topo ---------- */
+.to-top {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  border: 0;
+  cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .3s ease, visibility .3s ease, transform .3s ease, background .2s;
+  z-index: 150;
+}
+.to-top.show { opacity: 1; visibility: visible; transform: none; }
+.to-top:hover { background: var(--navy-soft); }
+.to-top svg { width: 22px; height: 22px; }
+@media (max-width: 640px) {
+  .to-top { left: 16px; bottom: 16px; width: 42px; height: 42px; }
 }
 
 /* =========================================================
