@@ -720,8 +720,8 @@ section { padding: 72px 0; }
 }
 
 /* ---------- Efeito "vem pra frente" ao passar o mouse ---------- */
-.split .media { transition: transform .3s ease, box-shadow .3s ease; }
-.split .media:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.split .media, .img-lift { transition: transform .3s ease, box-shadow .3s ease; }
+.split .media:hover, .img-lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 .legado-panel:hover,
 .quote:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
 
